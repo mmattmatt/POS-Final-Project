@@ -1,32 +1,47 @@
+# COMPUTER PROGRAMMING - FINAL PROJECT
+# GROUP 8 - POINT OF SALES (POS)
+# DEADLINE - DEC 11, 2024
+
 foods = []
 quantities = []
 prices = []
 total = 0
 
+#dictionary
+menu_items = {
+    "Hamburger": {"shortcut": "HB", "price": 60},
+    "Chicken": {"shortcut": "CC", "price": 120},
+    "Fries": {"shortcut": "FR", "price": 45},
+    "Pizza": {"shortcut": "PZ", "price": 300},
+    "Chicken Sandwich": {"shortcut": "CS", "price": 80}
+}
+# Process 1 - GET ORDER
 print("Menu:")
-print("Hamburger - Php.50")
-print("Chicken - Php.100")
-print()
+for food, details in menu_items.items():
+    print(f"{food} ({details['shortcut']}) - Php.{details['price']}")
 
-#Get order
-validItems = ["hamburger", "chicken"]
 while True:
-    food = input("Enter a food to buy ('done' to quit): ")
-    if food.lower() == 'done':
+    food_input = input("Enter a food to buy ('done' to quit): ")
+    if food_input.lower() == 'done':
         break
-    elif food.lower() not in validItems:
-        print("Invalid menu item. Please choose from the following:")
-        for item in validItems:
-            print(f"- {item.capitalize()}")
-    else:
-        quantity = int(input("Quantity: "))
-        price = float(input(f"Enter the price of a {food}: Php."))
-        
-        foods.append(food)
-        quantities.append(quantity)
-        prices.append(price * quantity)
 
-#Cart display
+    food_found = False
+    for food, details in menu_items.items():
+        if food_input.lower() == food.lower() or food_input.upper() == details['shortcut']:
+            quantity = int(input(f"Quantity of {food}: "))
+            price = details['price']
+            foods.append(food)
+            quantities.append(quantity)
+            prices.append(price * quantity)
+            food_found = True
+            break
+
+    if not food_found:
+        print("Invalid menu item. Please choose from the following:")
+        for food, details in menu_items.items():
+            print(f"- {food} ({details['shortcut']})")
+
+# Process 2 - CART DISPLAY
 print("________________________")
 print("YOUR CART:")
 for i in range(len(foods)):
@@ -38,7 +53,7 @@ for price in prices:
 print(f"Your total is: Php.{total}")
 print("------------------------")
 
-#Payment
+# Process 3 - PAYMENT
 while True:
     cash_input = input("Enter your cash: ")
     print (f"You've entered Php.{cash_input}")
@@ -57,3 +72,7 @@ while True:
     except ValueError:
         print("Invalid input. Please enter a number.")
 print("________________________")
+
+#Receipt
+print()
+print ("****RECEIPT****")
