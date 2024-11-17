@@ -18,7 +18,7 @@ menu_items = {
 # Process 1 - GET ORDER
 print("Menu:")
 for food, details in menu_items.items():
-    print(f"{food} ({details['shortcut']}) - Php.{details['price']}")
+    print(f"{food} ({details['shortcut']}) - Php {details['price']}")
 
 while True:
     food_input = input("Enter a food to buy ('done' to quit): ")
@@ -51,29 +51,29 @@ while True:
             print(f"- {food} ({details['shortcut']})")
 
 # Process 2 - CART DISPLAY
-print("_"*24)
+print("_"*25)
 print("YOUR CART:")
 for i in range(len(foods)):
-    print(f"{quantities[i]} x {foods[i]} - Php.{prices[i]}")
-print("-"*24)
+    print(f"{quantities[i]} x {foods[i]} - Php {prices[i]}")
+print("-"*25)
 
 for price in prices:
     total += price
-print(f"Your total is: Php.{total}")
-print("-"*24)
+print(f"Your total is: Php {total}")
+print("-"*25)
 
 # Process 3 - PAYMENT
 while True:
-    cash_input = input("Enter your cash: ")
-    print (f"You've entered Php.{cash_input}")
-    print("-"*24)
+    cash_input = float(input("Enter your cash: "))
+    print (f"Received Php {cash_input:.2f}")
+    print("-"*25)
     try:
         cash = float(cash_input)
         if cash < total:
             print("Insufficient funds. Please try again.")
         elif cash > total:
             change = cash - total
-            print(f"Your change is Php.{change}\n")
+            print(f"Your change is Php {change:.2f}\n")
             break
         else:
             print("Exact amount.\n")
@@ -94,7 +94,7 @@ cashier_names = ["Mask", "Liance", "Aries"]
 random_cashier = random.choice(cashier_names)
 # Date and time
 now = datetime.datetime.now()
-foramatted_datetime = now.strftime("%b. %d, %Y %I:%M:%S %p")
+foramatted_datetime = now.strftime("%b. %d, %Y %I:%M %p")
 # Header
 print ("\t\t OFFICIAL RECEIPT")
 print ("*"*50)
@@ -105,15 +105,15 @@ print (f"Cashier: {random_cashier}")
 print (f"{foramatted_datetime}\n")
 print("ITEM(S):\n")
 for i in range(len(foods)):
-    print(f"{quantities[i]} x {foods[i]} \t\t\t\t Php.{prices[i]}\n")
+    print(f"{quantities[i]} x {foods[i]} \t\t\t\t Php {prices[i]}\n")
 print("-"*50)
 # Footer
 total_item_sold = sum(quantities)
-print (f"NO. OF ITEMS:\t\t\t\t {total_item_sold}")
-print (f"Subtotal:\t\t\t\t Php.{total}\n")
-print (f"GRAND TOTAL:\t\t\t\t Php.{total}")
-print (f"CASH:\t\t\t\t\t Php.{cash}")
-print (f"CHANGE:\t\t\t\t\t Php.{change}")
+print (f"ITEM COUNT:\t\t\t\t {total_item_sold}")
+print (f"Subtotal:\t\t\t\t {total:.2f}\n")
+print (f"GRAND TOTAL:\t\t\t\t {total:.2f}")
+print (f"CASH:\t\t\t\t\t {cash:.2f}")
+print (f"CHANGE:\t\t\t\t\t {change:.2f}")
 print("-"*50)
 # Message
 print (f"\tTHANKS FOR CHOOSING {store_name.upper()}")
