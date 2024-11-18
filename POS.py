@@ -65,7 +65,6 @@ print("-"*25)
 # Process 3 - PAYMENT
 while True:
     cash_input = float(input("Enter your cash: "))
-    print (f"Received Php {cash_input:.2f}")
     print("-"*25)
     try:
         cash = float(cash_input)
@@ -73,6 +72,7 @@ while True:
             print("Insufficient funds. Please try again.")
         elif cash > total:
             change = cash - total
+            print (f"Received Php {cash_input:.2f}")
             print(f"Your change is Php {change:.2f}\n")
             break
         else:
