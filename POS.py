@@ -1,5 +1,5 @@
 # COMPUTER PROGRAMMING - FINAL PROJECT
-# GROUP 8 - POINT OF SALES (POS)
+# GROUP 8 - POINT OF SALE (POS)
 # DEADLINE - DEC 11, 2024
 
 foods = []
@@ -64,7 +64,7 @@ print("-"*25)
 
 # Process 3 - PAYMENT
 while True:
-    cash_input = float(input("Enter your cash: "))
+    cash_input = input("Enter your cash: ")
     print("-"*25)
     try:
         cash = float(cash_input)
@@ -72,7 +72,7 @@ while True:
             print("Insufficient funds. Please try again.")
         elif cash > total:
             change = cash - total
-            print (f"Received Php {cash_input:.2f}")
+            print (f"Received Php {cash_input}")
             print(f"Your change is Php {change:.2f}\n")
             break
         else:
