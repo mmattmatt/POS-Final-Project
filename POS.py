@@ -1,5 +1,5 @@
 # COMPUTER PROGRAMMING - FINAL PROJECT
-# GROUP 8 - POINT OF SALE (POS)
+# GROUP 8 - POINT OF SALES (POS)
 # DEADLINE - DEC 11, 2024
 
 foods = []
@@ -7,19 +7,30 @@ quantities = []
 prices = []
 total = 0
 
-#dictionary
+# Dictionary
 menu_items = {
-    "Hamburger": {"shortcut": "HB", "price": 60},
-    "Chicken": {"shortcut": "CC", "price": 120},
-    "Fries": {"shortcut": "FR", "price": 45},
-    "Pizza": {"shortcut": "PZ", "price": 300},
-    "Chicken Sandwich": {"shortcut": "CS", "price": 80}
+    "Fries": {"shortcut": "FR", "price": 25},
+    "Sandwich": {"shortcut": "SD", "price": 25},
+    "Muffin": {"shortcut": "MF","price": 25},
+    "Hamburger": {"shortcut": "HB", "price": 30},
+    "Chicken": {"shortcut": "CC", "price": 60},
+    "ChocoCake": {"shortcut":"CH","price": 65},
+    "HalfPizza": {"shortcut":"HP","price": 135},
+    "Pizza": {"shortcut": "PZ", "price": 250},
+    "Cookies": {"shortcut":"CK","price": 25},
+    "Milktea": {"shortcut": "MT","price": 30},
+    "Hot choco":{"shortcut": "HC","price": 30},
+    "Shake": {"shortcut": "SH","price": 35},
+    "Cold Brew":{"shortcut": "CB","price": 45},
+    "Espresso": {"shortcut": "ES","price": 50}
 }
+
 # Process 1 - GET ORDER
 print("Menu:")
 for food, details in menu_items.items():
-    print(f"{food} ({details['shortcut']}) - Php {details['price']}")
-
+    print(f"{food} ({details['shortcut']})\t - Php {details['price']}")
+    
+print()
 while True:
     food_input = input("Enter a food to buy ('done' to quit): ")
     if food_input.lower() == 'done':
@@ -54,7 +65,7 @@ while True:
 print("_"*25)
 print("YOUR CART:")
 for i in range(len(foods)):
-    print(f"{quantities[i]} x {foods[i]} - Php {prices[i]}")
+    print(f"{quantities[i]} x {foods[i]}\t - Php {prices[i]}")
 print("-"*25)
 
 for price in prices:
