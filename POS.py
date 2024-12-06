@@ -6,6 +6,8 @@ foods = []
 quantities = []
 prices = []
 total = 0
+invalid_attempts = 0
+import sys
 
 # Dictionary
 menu_items = {
@@ -26,9 +28,13 @@ menu_items = {
 }
 
 # Process 1 - GET ORDER
-print("Menu:")
+print("-"*30)
+print("\t     Menu".upper())
+print("_"*30)
+print ("Items:\t\t\tPrice:\n".upper())
+
 for food, details in menu_items.items():
-    print(f"{food} ({details['shortcut']})\t - Php {details['price']}")
+    print(f"{food} ({details['shortcut']})\t\tPhp {details['price']}")
     
 print()
 while True:
@@ -57,6 +63,11 @@ while True:
             break
 
     if not food_found:
+        invalid_attempts += 1
+        print ("No. of attempts:", invalid_attempts)
+        if invalid_attempts == 3:
+            print ("Reached maximum invalid attempts. Exiting...")
+            sys.exit()
         print("Invalid menu item. Please choose from the following:")
         for food, details in menu_items.items():
             print(f"- {food} ({details['shortcut']})")
