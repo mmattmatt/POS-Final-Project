@@ -6,54 +6,112 @@ foods = []
 quantities = []
 prices = []
 total = 0
-invalid_attempts = 0
+invalid_attempt_order_prompt = 0
+invalid_attempt_food = 0
+invalid_attempts_cash = 0
+invalid_attempt_quantity = 0
+invalid_attempt_choice = 0
+max_payment = 25000
+max_quantity = 50 
 import sys
+import datetime
+import random
 
 # Dictionary
 menu_items = {
-    "Fries": {"shortcut": "FR", "price": 25},
-    "Sandwich": {"shortcut": "SD", "price": 25},
-    "Muffin": {"shortcut": "MF","price": 25},
-    "Hamburger": {"shortcut": "HB", "price": 30},
-    "Chicken": {"shortcut": "CC", "price": 60},
-    "ChocoCake": {"shortcut":"CH","price": 65},
-    "HalfPizza": {"shortcut":"HP","price": 135},
-    "Pizza": {"shortcut": "PZ", "price": 250},
-    "Cookies": {"shortcut":"CK","price": 25},
-    "Milktea": {"shortcut": "MT","price": 30},
-    "Hot choco":{"shortcut": "HC","price": 30},
-    "Shake": {"shortcut": "SH","price": 35},
-    "Cold Brew":{"shortcut": "CB","price": 45},
-    "Espresso": {"shortcut": "ES","price": 50}
+    "Fries": {"shortcut": "FR", "price": 25, "type": "food"},
+    "Sandwich": {"shortcut": "SD", "price": 25, "type": "food"},
+    "Muffin": {"shortcut": "MF", "price": 25, "type": "food"},
+    "Hamburger": {"shortcut": "HB", "price": 30, "type": "food"},
+    "Chicken": {"shortcut": "CC", "price": 60, "type": "food"},
+    "ChocoCake": {"shortcut": "CH", "price": 65, "type": "food"},
+    "HalfPizza": {"shortcut": "HP", "price": 135, "type": "food"},
+    "Pizza": {"shortcut": "PZ", "price": 250, "type": "food"},
+    "Milktea": {"shortcut": "MT", "price": 30, "type": "drink"},
+    "Hot choco": {"shortcut": "HC", "price": 30, "type": "drink"},
+    "Shake": {"shortcut": "SH", "price": 35, "type": "drink"},
+    "Cold Brew": {"shortcut": "CB", "price": 45, "type": "drink"},
+    "Espresso": {"shortcut": "ES", "price": 50, "type": "drink"}
 }
 
 # Process 1 - GET ORDER
-print("-"*30)
-print("\t     Menu".upper())
-print("_"*30)
-print ("Items:\t\t\tPrice:\n".upper())
+print ("Hi there! 👋 Welcome to G8 Crave Cave!")
+print ("Are you hungry? 🍔🍕 Craving something delicious? 😋 Let us know!")
+# Step 1
+while True:
+    try:
+        print ("[1] start".upper())
+        print ("[2] exit".upper())
+        choice = int(input("Enter your choice here: "))
+        if choice == 1:
+            break
+        elif choice == 2:
+            print ("Thank you for visiting. Please come again soon.")
+            sys.exit()
+        else:
+            raise ValueError
+    except ValueError:
+        invalid_attempt_choice += 1
+        print (f"Invalid input. Please select again. ({invalid_attempt_choice})")
+        if invalid_attempt_choice == 3:
+            print (f"You've reached the maximum (3) invalid attempts. Exiting...")
+            sys.exit()
 
+# Display Menu
+print(r"""
+╔──────────────────────────────────────────────╗
+│  ___ ___    ___   _____    ___   ___   _____ │
+│ / __| _ \  /_\ \ / / __|  / __| /_\ \ / / __|│
+│| (__|   / / _ \ V /| _|  | (__ / _ \ V /| _| │
+│ \___|_|_\/_/ \_\_/ |___|  \___/_/ \_\_/ |___|│
+╚──────────────────────────────────────────────╝
+""")
+print("-"*48)
+print("\t\t      Menu".upper())
+print("-"*48)
+
+print(("food:\t\t\t\t\tprice:").title())
 for food, details in menu_items.items():
-    print(f"{food} ({details['shortcut']})\t\tPhp {details['price']}")
-    
+    if details["type"] == "food":
+        print(f"{food} ({details['shortcut']})\t\t\t\tPhp {details['price']}")
+print()
+print("Drinks:")
+for food, details in menu_items.items():
+    if details["type"] == "drink":
+        print(f"{food} ({details['shortcut']})\t\t\t\tPhp {details['price']}")
+print("_"*48)
+
+# Order Prompt
 print()
 while True:
     food_input = input("Enter a food to buy ('done' to quit): ")
     if food_input.lower() == 'done':
-        break
-
+        if not foods:
+            print("Your cart is empty. Please select an item to continue.")
+            continue 
+        else:
+            break
+        
     food_found = False
     for food, details in menu_items.items():
         if food_input.lower() == food.lower() or food_input.upper() == details['shortcut']:
             while True:
                 try:
                     quantity = int(input(f"Quantity of {food}: "))
-                    if quantity <= 0:
-                        print ("Please select again")
-                        continue
-                    break
+                    if quantity <= 0 or quantity >= max_quantity:
+                        invalid_attempt_quantity += 1
+                        print (f"Invalid quantity. Please try again. ({invalid_attempt_quantity})")
+                        if invalid_attempt_quantity == 3:
+                            print ("You've reached the maximum (3) invalid attempts. Exiting...")
+                            sys.exit()
+                    else: 
+                        break
                 except ValueError:
-                    print("Invalid input. Please enter a number")
+                    invalid_attempt_quantity += 1
+                    print(f"Invalid input. Please enter a number. ({invalid_attempt_quantity})")
+                    if invalid_attempt_quantity == 3:
+                        print ("You've reached the maximum (3) invalid attempts. Exiting...")
+                        sys.exit()
 
             price = details['price']
             foods.append(food)
@@ -63,35 +121,45 @@ while True:
             break
 
     if not food_found:
-        invalid_attempts += 1
-        print ("No. of attempts:", invalid_attempts)
-        if invalid_attempts == 3:
-            print ("Reached maximum invalid attempts. Exiting...")
+        invalid_attempt_food += 1
+        print ("Invalid attempts:", invalid_attempt_food)
+        if invalid_attempt_food == 3:
+            print ("You've reached the maximum (3) invalid attempts. Exiting...")
             sys.exit()
         print("Invalid menu item. Please choose from the following:")
         for food, details in menu_items.items():
             print(f"- {food} ({details['shortcut']})")
 
 # Process 2 - CART DISPLAY
-print("_"*25)
+print("_"*48)
 print("YOUR CART:")
 for i in range(len(foods)):
-    print(f"{quantities[i]} x {foods[i]}\t - Php {prices[i]}")
-print("-"*25)
+    print(f"{quantities[i]} x {foods[i]}\t\t\t    - Php {prices[i]}")
+print("-"*48)
 
 for price in prices:
     total += price
 print(f"Your total is: Php {total}")
-print("-"*25)
+print("-"*48)
 
 # Process 3 - PAYMENT
 while True:
     cash_input = input("Enter your cash: ")
-    print("-"*25)
+    print("-"*48)
     try:
         cash = float(cash_input)
-        if cash < total:
-            print("Insufficient funds. Please try again.")
+        invalid_attempts_cash += 1
+        if cash > max_payment:
+            print (f"You've reached the limit for payment. Please try again. ({invalid_attempts_cash})")
+            if invalid_attempts_cash == 3:
+               print ("You've reached the maximum (3) invalid attempts. Exiting...")
+               sys.exit()
+        elif cash < total:
+            invalid_attempts_cash += 1
+            print(f"Insufficient funds. Please try again. ({invalid_attempts_cash})")
+            if invalid_attempts_cash == 3:
+               print ("You've reached the maximum (3) invalid attempts. Exiting...")
+               sys.exit()
         elif cash > total:
             change = cash - total
             print (f"Received Php {cash_input}")
@@ -102,13 +170,16 @@ while True:
             change = 0
             break
     except ValueError:
-        print("Invalid input. Please enter a number.")
+        invalid_attempts_cash += 1
+        print(f"Invalid input. Please enter a number. ({invalid_attempts_cash})")
+        if invalid_attempts_cash == 3:
+            print ("You've reached the maximum (3) invalid attempts. Exiting...")
+            sys.exit()
+
 print ("Generating a receipt.........\n")
 print("-"*50)
 
 # Process 4 - RECEIPT
-import datetime
-import random
 # Store information
 store_name = ("g8 crave cave")
 store_address = ("bulacan state university")
@@ -140,4 +211,12 @@ print("-"*50)
 # Message
 print (f"\tTHANKS FOR CHOOSING {store_name.upper()}")
 print ("\tWE HOPE TO SEE YOU AGAIN SOON!")
+print(r"""
+╔──────────────────────────────────────────────╗
+│  ___ ___    ___   _____    ___   ___   _____ │
+│ / __| _ \  /_\ \ / / __|  / __| /_\ \ / / __|│
+│| (__|   / / _ \ V /| _|  | (__ / _ \ V /| _| │
+│ \___|_|_\/_/ \_\_/ |___|  \___/_/ \_\_/ |___|│
+╚──────────────────────────────────────────────╝
+""")
 print("-"*50)
